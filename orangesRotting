@@ -1,0 +1,33 @@
+def orangesRotting(self, grid):
+        rows, cols = len(grid), len(grid[0])
+        def bfs(q, f):
+            minutes= -1
+            l = len(q)
+            count=0
+            if not q:
+                minutes+=1
+            while q:
+                minutes+=1
+                for i in range(len(q)):
+                    r,c = q.popleft()
+                    if grid[r][c]==2:
+                        adj = [(r+1,c), (r-1,c),(r,c+1),(r,c-1)]
+                        for nr, nc in adj:
+                            if nr in range(rows) and nc in range(cols) and grid[nr][nc]==1:
+                                grid[nr][nc]=2
+                                q.append((nr,nc))
+                                f-=1
+            return minutes, f
+        q=deque()
+        fresh=0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c]==2:
+                    q.append((r,c))
+                elif grid[r][c]==1:
+                    fresh+=1
+        output, f = bfs(q, fresh)
+        if f!=0:
+            return -1
+        else:  
+            return output
